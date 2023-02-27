@@ -1,10 +1,6 @@
-variable "pagerduty_token" {
-  default = ""
-}
+variable "pagerduty_token" {}
 
-variable "pagerduty_user_token" {
-  default = ""
-}
+variable "pagerduty_user_token" {}
 
 variable "services" {
   type = map(object({

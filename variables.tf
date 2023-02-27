@@ -1,5 +1,9 @@
 variable "pagerduty_token" {
-  default = "u+HJSuyKwCs8MKyD9bDQ"
+  default = ""
+}
+
+variable "pagerduty_user_token" {
+  default = ""
 }
 
 variable "services" {

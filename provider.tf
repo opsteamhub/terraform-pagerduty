@@ -15,5 +15,5 @@ terraform {
 
 provider "pagerduty" {
   token      = var.pagerduty_token
-  user_token = "u+LECi7fnXdU8W9yfDYQ"
+  user_token = var.pagerduty_user_token
 }

@@ -32,3 +32,7 @@ output "pagerduty_key" {
 output "integration_name" {
   value = regex("[aA-zZ-]+[^=]$", replace(replace(replace(replace(jsonencode({ for k, v in pagerduty_service_integration.prometheus : k => v.name  }), "\"", ""), ":", "="), "{", ""), "}", ""))
 }
+
+output "service_integration" {
+  value = pagerduty_service_integration.prometheus
+}

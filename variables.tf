@@ -1,9 +1,5 @@
 variable "pagerduty_token" {
-  default = ""
-}
-
-variable "pagerduty_user_token" {
-  default = ""
+  default = "u+HJSuyKwCs8MKyD9bDQ"
 }
 
 variable "services" {
@@ -17,7 +13,7 @@ variable "services" {
     rules = optional(map(object({
       escalation_delay_in_minutes = optional(number, 15)
       type                        = optional(string, "schedule_reference")
-      target                      = optional(string, null)
+      target                      = optional(set(string), null)
     })))
     source_type                = optional(string, "service_reference")
     workspace_id               = optional(string, "")
@@ -61,7 +57,7 @@ variable "schedule" {
     start                        = optional(string, "2023-02-16T08:00:00Z")
     rotation_virtual_start       = optional(string, "2023-02-16T08:00:00Z")
     rotation_turn_length_seconds = optional(number, 86400)
-    users                        = optional(string)
+    users                        = optional(list(string), [])
     type                         = optional(string, "weekly_restriction")
     start_time_of_day            = optional(string, "16:00:00")
     duration_seconds             = optional(number, 432000)

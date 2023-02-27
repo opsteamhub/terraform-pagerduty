@@ -7,7 +7,8 @@ resource "pagerduty_service" "service" {
   alert_creation          = each.value["alert_creation"]
 
   depends_on = [
-    pagerduty_escalation_policy.es_policy
+    pagerduty_escalation_policy.es_policy,
+    pagerduty_schedule.schedule
   ]
 
 }
@@ -28,11 +29,26 @@ resource "pagerduty_escalation_policy" "es_policy" {
     content {
       escalation_delay_in_minutes = rule.value["escalation_delay_in_minutes"]
 
-      target {
-        type = rule.value["type"]
-        #id = data.pagerduty_schedule.schedule[each.key].id
-        id = rule.value["type"] == "schedule_reference" ? pagerduty_schedule.schedule[rule.value["target"]].id : pagerduty_user.user[rule.value["target"]].id
+      dynamic "target" {
+        for_each = rule.value["target"]
+        content {
+          type = rule.value["type"]
+          id = try(
+            pagerduty_schedule.schedule[target.value].id,
+            pagerduty_user.user[target.value].id
+          )
+        }
       }
+
+      ##target {
+      ##  type = rule.value["type"]
+      ##  id   = rule.value["type"] == "schedule_reference" ? [ for x in rule.value["target"]: 
+      ##    pagerduty_schedule.schedule[x].id 
+      ##  ] : [ for x in rule.value["target"]:
+      ##    pagerduty_user.user[x].id
+      ##  ]
+      ##  #id = rule.value["type"] == "schedule_reference" ? pagerduty_schedule.schedule[rule.value["target"]].id : pagerduty_user.user[rule.value["target"]].id
+      ##}
     }
   }
 }
@@ -46,14 +62,14 @@ data "pagerduty_team" "team" {
   ]
 }
 
-data "pagerduty_user" "users" {
-  for_each = var.schedule
-  email    = each.value["users"]
-
-  depends_on = [
-    pagerduty_user.user
-  ]
-}
+#data "pagerduty_user" "users" {
+#  for_each = var.schedule
+#  email    = each.value["users"]
+#
+#  depends_on = [
+#    pagerduty_user.user
+#  ]
+#}
 
 #data "pagerduty_schedule" "schedule" {
 #  for_each = var.services

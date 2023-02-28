@@ -19,7 +19,7 @@ resource "pagerduty_escalation_policy" "es_policy" {
   #teams    = [data.pagerduty_team.team[each.key].id]
 
   depends_on = [
-    pagerduty_team.team,
+    #pagerduty_team.team,
     pagerduty_schedule.schedule,
     pagerduty_user.user
   ]
@@ -53,14 +53,14 @@ resource "pagerduty_escalation_policy" "es_policy" {
   }
 }
 
-data "pagerduty_team" "team" {
-  for_each = var.services
-  name     = each.value["teams"]
-
-  depends_on = [
-    pagerduty_team.team
-  ]
-}
+#data "pagerduty_team" "team" {
+#  for_each = var.services
+#  name     = each.value["teams"]
+#
+#  depends_on = [
+#    pagerduty_team.team
+#  ]
+#}
 
 #data "pagerduty_user" "users" {
 #  for_each = var.schedule

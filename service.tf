@@ -16,7 +16,7 @@ resource "pagerduty_service" "service" {
 resource "pagerduty_escalation_policy" "es_policy" {
   for_each = var.services
   name     = join("-", [each.key, "pl"])
-  teams    = [data.pagerduty_team.team[each.key].id]
+  #teams    = [data.pagerduty_team.team[each.key].id]
 
   depends_on = [
     pagerduty_team.team,

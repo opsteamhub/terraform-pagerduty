@@ -8,7 +8,7 @@ variable "services" {
     auto_resolve_timeout    = optional(number, 14400)
     acknowledgement_timeout = optional(number, 600)
     alert_creation          = optional(string, "create_alerts_and_incidents")
-    teams                   = optional(string, null)
+    #teams                   = optional(string, null)
 
     rules = optional(map(object({
       escalation_delay_in_minutes = optional(number, 15)
@@ -27,13 +27,13 @@ variable "services" {
   default = {}
 }
 
-variable "teams" {
-  type = map(object({
-    team_name        = optional(string)
-    team_description = optional(string)
-  }))
-  default = {}
-}
+#variable "teams" {
+#  type = map(object({
+#    team_name        = optional(string)
+#    team_description = optional(string)
+#  }))
+#  default = {}
+#}
 
 variable "users" {
   type = map(object({
@@ -41,7 +41,7 @@ variable "users" {
     user_email     = optional(string, "")
     user_role      = optional(string, "user")
     user_time_zone = optional(string, "America/Sao_Paulo")
-    teams_member   = list(string)
+    #teams_member   = list(string)
     country_code   = optional(string, "+55")
     phone          = optional(string, "")
     label          = optional(string, "Work")

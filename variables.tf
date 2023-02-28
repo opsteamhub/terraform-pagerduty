@@ -42,9 +42,9 @@ variable "users" {
     user_role      = optional(string, "user")
     user_time_zone = optional(string, "America/Sao_Paulo")
     #teams_member   = list(string)
-    country_code   = optional(string, "+55")
-    phone          = optional(string, "")
-    label          = optional(string, "Work")
+    country_code = optional(string, "+55")
+    phone        = optional(string, "")
+    label        = optional(string, "Work")
   }))
   default = {}
 }

@@ -9,7 +9,7 @@ resource "pagerduty_service_integration" "prometheus" {
   for_each = { for k, v in var.services :
     k => v if try(v["service_integration"], false) == true
   }
-  name    = join("-", [data.pagerduty_vendor.prometheus[each.key].name, each.key])
+  name    = each.key
   service = pagerduty_service.service[each.key].id
   vendor  = data.pagerduty_vendor.prometheus[each.key].id
 }
@@ -18,9 +18,9 @@ resource "pagerduty_service_integration" "prometheus" {
 output "pd_int" {
   #value = pagerduty_service_integration.prometheus.integration_key
   value = tomap({ for k, v in pagerduty_service_integration.prometheus : k => {
-    pagerduty_key = v.integration_key 
-    pagerduty_name = v.name  
-    }  
+    pagerduty_key  = v.integration_key
+    pagerduty_name = v.name
+    }
   })
 }
 

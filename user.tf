@@ -75,3 +75,15 @@ resource "pagerduty_user_notification_rule" "high_urgency_sms" {
     id   = pagerduty_user_contact_method.sms[each.key].id
   }
 }
+
+resource "pagerduty_user_notification_rule" "low_urgency_email" {
+  for_each               = var.users
+  user_id                = pagerduty_user.user[each.key].id
+  start_delay_in_minutes = 15
+  urgency                = "low"
+
+  contact_method = {
+    type = "email_contact_method"
+    id   = pagerduty_user.user[each.key].id
+  }
+}

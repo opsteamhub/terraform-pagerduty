@@ -51,6 +51,13 @@ resource "pagerduty_user_contact_method" "sms" {
   label        = each.value["label"]
 }
 
+resource "pagerduty_user_contact_method" "email" {
+  for_each     = var.users
+  user_id      = pagerduty_user.user[each.key].id
+  type         = "email_contact_method"
+  address      = each.key
+  label        = each.value["label"]
+}
 
 resource "pagerduty_user_notification_rule" "high_urgency_phone" {
   for_each               = var.users
@@ -84,6 +91,6 @@ resource "pagerduty_user_notification_rule" "low_urgency_email" {
 
   contact_method = {
     type = "email_contact_method"
-    id   = pagerduty_user.user[each.key].id
+    id   = pagerduty_user_contact_method.email[each.key].id
   }
 }

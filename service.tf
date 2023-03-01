@@ -13,6 +13,7 @@ resource "pagerduty_service" "service" {
 
   incident_urgency_rule {
     type = "constant"
+    urgency = "severity_based"
 
 
   }

@@ -29,7 +29,7 @@ resource "pagerduty_slack_connection" "slack" {
       "incident.status_update_published",
       "incident.reopened"
     ]
-    priorities = ["*"]
+    priorities = []
 
   }
 }

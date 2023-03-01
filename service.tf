@@ -11,6 +11,14 @@ resource "pagerduty_service" "service" {
     pagerduty_schedule.schedule
   ]
 
+  incident_urgency_rule {
+    type = "use_support_hours"
+
+    during_support_hours {
+      type    = "constant"
+      urgency = "high"
+    }
+
 }
 
 resource "pagerduty_escalation_policy" "es_policy" {

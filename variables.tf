@@ -19,7 +19,7 @@ variable "services" {
     workspace_id               = optional(string, "")
     channel_id                 = optional(string, "")
     notification_type          = optional(string, "responder")
-    priority_name              = optional(string, "Any Priority")
+    priority_name              = optional(string, "*")
     slack_integration          = optional(bool, false)
     service_integration        = optional(bool, false)
     service_integration_vendor = optional(string, "Prometheus")

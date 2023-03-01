@@ -51,18 +51,10 @@ resource "pagerduty_user_contact_method" "sms" {
   label        = each.value["label"]
 }
 
-resource "pagerduty_user_contact_method" "email" {
-  for_each     = var.users
-  user_id      = pagerduty_user.user[each.key].id
-  type         = "email_contact_method"
-  address      = each.key
-  label        = each.value["label"]
-}
-
 resource "pagerduty_user_notification_rule" "high_urgency_phone" {
   for_each               = var.users
   user_id                = pagerduty_user.user[each.key].id
-  start_delay_in_minutes = 1
+  start_delay_in_minutes = 3
   urgency                = "high"
 
   contact_method = {
@@ -74,7 +66,7 @@ resource "pagerduty_user_notification_rule" "high_urgency_phone" {
 resource "pagerduty_user_notification_rule" "high_urgency_sms" {
   for_each               = var.users
   user_id                = pagerduty_user.user[each.key].id
-  start_delay_in_minutes = 0
+  start_delay_in_minutes = 3
   urgency                = "high"
 
   contact_method = {
@@ -83,14 +75,3 @@ resource "pagerduty_user_notification_rule" "high_urgency_sms" {
   }
 }
 
-resource "pagerduty_user_notification_rule" "low_urgency_email" {
-  for_each               = var.users
-  user_id                = pagerduty_user.user[each.key].id
-  start_delay_in_minutes = 15
-  urgency                = "low"
-
-  contact_method = {
-    type = "email_contact_method"
-    id   = pagerduty_user_contact_method.email[each.key].id
-  }
-}

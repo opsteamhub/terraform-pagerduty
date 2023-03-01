@@ -1,7 +1,7 @@
-data "pagerduty_priority" "p1" {
-  for_each = var.services
-  name     = each.value["priority_name"]
-}
+#data "pagerduty_priority" "p1" {
+#  for_each = var.services
+#  name     = each.value["priority_name"]
+#}
 
 resource "pagerduty_slack_connection" "slack" {
   for_each = { for k, v in var.services :
@@ -29,7 +29,7 @@ resource "pagerduty_slack_connection" "slack" {
       "incident.status_update_published",
       "incident.reopened"
     ]
-    priorities = [data.pagerduty_priority.p1[each.key].id]
+    priorities = ["*"]
 
   }
 }

@@ -18,6 +18,7 @@ resource "pagerduty_service" "service" {
       type    = "constant"
       urgency = "high"
     }
+  }  
 
 }
 

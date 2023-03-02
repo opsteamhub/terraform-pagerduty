@@ -5,6 +5,7 @@ variable "pagerduty_user_token" {}
 variable "services" {
   type = map(object({
     name                    = optional(string)
+    description             = optional(string, "Provisioning Service by Terraform")
     auto_resolve_timeout    = optional(number, 14400)
     acknowledgement_timeout = optional(number, 600)
     alert_creation          = optional(string, "create_alerts_and_incidents")

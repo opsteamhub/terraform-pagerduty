@@ -42,36 +42,37 @@ resource "pagerduty_user" "user" {
 #  label        = each.value["label"]
 #}
 
-resource "pagerduty_user_contact_method" "sms" {
-  for_each     = var.users
-  user_id      = pagerduty_user.user[each.key].id
-  type         = "sms_contact_method"
-  country_code = each.value["country_code"]
-  address      = each.value["phone"]
-  label        = each.value["label"]
-}
+#resource "pagerduty_user_contact_method" "sms" {
+#  for_each     = var.users
+#  user_id      = pagerduty_user.user[each.key].id
+#  type         = "sms_contact_method"
+#  country_code = each.value["country_code"]
+#  address      = each.value["phone"]
+#  label        = each.value["label"]
+#}
 
-resource "pagerduty_user_notification_rule" "high_urgency_phone" {
-  for_each               = var.users
-  user_id                = pagerduty_user.user[each.key].id
-  start_delay_in_minutes = 3
-  urgency                = "high"
-
-  contact_method = {
-    type = "phone_contact_method"
-    id   = pagerduty_user_contact_method.sms[each.key].id
-  }
-}
-
-resource "pagerduty_user_notification_rule" "high_urgency_sms" {
-  for_each               = var.users
-  user_id                = pagerduty_user.user[each.key].id
-  start_delay_in_minutes = 3
-  urgency                = "high"
-
-  contact_method = {
-    type = "sms_contact_method"
-    id   = pagerduty_user_contact_method.sms[each.key].id
-  }
-}
-
+#resource "pagerduty_user_notification_rule" "high_urgency_phone" {
+#  for_each               = var.users
+#  user_id                = pagerduty_user.user[each.key].id
+#  start_delay_in_minutes = 3
+#  urgency                = "high"
+#
+#  contact_method = {
+#    type = "phone_contact_method"
+#    id   = pagerduty_user_contact_method.sms[each.key].id
+#  }
+#}
+#
+#resource "pagerduty_user_notification_rule" "high_urgency_sms" {
+#  for_each               = var.users
+#  user_id                = pagerduty_user.user[each.key].id
+#  start_delay_in_minutes = 3
+#  urgency                = "high"
+#
+#  contact_method = {
+#    type = "sms_contact_method"
+#    id   = pagerduty_user_contact_method.sms[each.key].id
+#  }
+#}
+#
+#

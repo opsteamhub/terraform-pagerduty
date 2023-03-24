@@ -59,7 +59,7 @@ resource "pagerduty_user_notification_rule" "high_urgency_phone" {
 
   contact_method = {
     type = "phone_contact_method"
-    id   = pagerduty_user_contact_method.phone[each.key].id
+    id   = pagerduty_user_contact_method.sms[each.key].id
   }
 }
 

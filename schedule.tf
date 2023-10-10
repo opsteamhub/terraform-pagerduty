@@ -10,6 +10,7 @@ resource "pagerduty_schedule" "schedule" {
   layer {
     name                         = each.value["layer_name"]
     start                        = each.value["start"]
+    end                          = each.value["end"]
     rotation_virtual_start       = each.value["rotation_virtual_start"]
     rotation_turn_length_seconds = each.value["rotation_turn_length_seconds"]
     users = [for x in each.value["users"] :
@@ -17,10 +18,10 @@ resource "pagerduty_schedule" "schedule" {
     ]
 
     restriction {
-      type              = each.value["type"]
+      type              = each.value["type"] 
       start_time_of_day = each.value["start_time_of_day"]
       duration_seconds  = each.value["duration_seconds"]
-      start_day_of_week = each.value["start_day_of_week"]
+      start_day_of_week = each.value["type"]  == "weekly_restriction" ? each.value["start_day_of_week"] : null
     }
   }
 }

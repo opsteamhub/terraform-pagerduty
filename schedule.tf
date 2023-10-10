@@ -16,12 +16,12 @@ resource "pagerduty_schedule" "schedule" {
       data.pagerduty_user.users[x].id
     ]
 
-    restriction {
-      type              = each.value["type"] 
-      start_time_of_day = each.value["start_time_of_day"]
-      duration_seconds  = each.value["duration_seconds"]
-      start_day_of_week = each.value["type"]  == "weekly_restriction" ? each.value["start_day_of_week"] : null
-    }
+    #restriction {
+    #  type              = each.value["type"] 
+    #  start_time_of_day = each.value["start_time_of_day"]
+    #  duration_seconds  = each.value["duration_seconds"]
+    #  start_day_of_week = each.value["type"]  == "weekly_restriction" ? each.value["start_day_of_week"] : null
+    #}
   }
 }
 

@@ -10,7 +10,6 @@ resource "pagerduty_schedule" "schedule" {
   layer {
     name                         = each.value["layer_name"]
     start                        = each.value["start"]
-    end                          = each.value["end"]
     rotation_virtual_start       = each.value["rotation_virtual_start"]
     rotation_turn_length_seconds = each.value["rotation_turn_length_seconds"]
     users = [for x in each.value["users"] :

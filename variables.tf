@@ -70,7 +70,6 @@ variable "schedule" {
       rotation_turn_length_seconds = optional(number, 86400)
       users                        = optional(list(string), [])
     })))
-    default = []
   }))
   default = {}
 }

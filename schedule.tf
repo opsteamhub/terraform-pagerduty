@@ -9,7 +9,7 @@ resource "pagerduty_schedule" "schedule" {
   dynamic "layer" {
     for_each = each.value["layer"]
     content {
-      name                         = layer.value["layer_name"]
+      name                         = layer.key
       start                        = layer.value["start"]
       rotation_virtual_start       = layer.value["rotation_virtual_start"]
       rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]

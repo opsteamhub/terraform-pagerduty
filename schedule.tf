@@ -16,7 +16,7 @@ resource "pagerduty_schedule" "schedule" {
       #users = [for x in layer.value["users"] :
       #  data.pagerduty_user.users[x].id
       #]  
-      users = [for user in layer.value["users"] : data.pagerduty_user.users[user].each.key[0].id]  
+      users = values(data.pagerduty_user.users)[*].id
       
     }  
   }
@@ -52,11 +52,9 @@ resource "pagerduty_schedule" "schedule" {
 #}
 
 data "pagerduty_user" "users" {
-  for_each = {
-    for layer_name, layer in var.schedule : layer_name => length(values(layer.layer)) > 0 ? tolist(values(layer.layer)[0].users) : []
-  }
+  for_each = toset(layer.value["users"])
 
-  email = each.value[0]
+  email = each.value
 
   depends_on = [
     pagerduty_user.user

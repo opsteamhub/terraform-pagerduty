@@ -51,7 +51,7 @@ resource "pagerduty_schedule" "schedule" {
 
 data "pagerduty_user" "users" {
   for_each = {
-    for layer_name, layer in var.schedule : layer_name => length(values(layer.layer[0].users)) > 0 ? tolist(values(layer.layer[0].users))[0] : null
+    for layer_name, layer in var.schedule : layer_name => length(values(layer.layer)) > 0 ? tolist(values(layer.layer)[0].users) : null
   }
 
   email = each.value

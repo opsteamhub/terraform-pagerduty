@@ -42,8 +42,9 @@ data "pagerduty_user" "users" {
     distinct(flatten(values(var.schedule)[*]["layer"])),
     distinct(flatten(values(var.schedule)[*]["layer"]))
   )
-  email = each.value
-
+  email = { for k,v in each.value :
+   k => v.users
+  }
   depends_on = [
     pagerduty_user.user
   ]

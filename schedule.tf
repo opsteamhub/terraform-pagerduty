@@ -13,8 +13,9 @@ resource "pagerduty_schedule" "schedule" {
       start                        = layer.value["start"]
       rotation_virtual_start       = layer.value["rotation_virtual_start"]
       rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]
-      users = layer.value["users"] 
-  
+      users = [for x in layer.value["users"] :
+        data.pagerduty_user.users[x].id
+      ]    
     }  
   }
   #layer {
@@ -36,17 +37,17 @@ resource "pagerduty_schedule" "schedule" {
 }
 
 
-#data "pagerduty_user" "users" {
-#  for_each = zipmap(
-#    distinct(flatten(values(var.schedule)[*]["layer"]["users"])),
-#    distinct(flatten(values(var.schedule)[*]["layer"]["users"]))
-#  )
-#  email = each.value
-#
-#  depends_on = [
-#    pagerduty_user.user
-#  ]
-#}
+data "pagerduty_user" "users" {
+  for_each = zipmap(
+    distinct(flatten(values(var.schedule)[*]["users"])),
+    distinct(flatten(values(var.schedule)[*]["users"]))
+  )
+  email = each.value["layer"]
+
+  depends_on = [
+    pagerduty_user.user
+  ]
+}
 
 #output "teste" {
 #  value = zipmap(

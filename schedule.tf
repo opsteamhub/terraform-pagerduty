@@ -51,7 +51,7 @@ resource "pagerduty_schedule" "schedule" {
 
 data "pagerduty_user" "users" {
   for_each = {
-    for layer in values(var.schedule) : layer.name => flatten([for user in layer.users : user])
+    for layer_name, layer in var.schedule : layer_name => layer.layer.users
   }
 
   email = each.value

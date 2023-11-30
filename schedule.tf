@@ -13,10 +13,9 @@ resource "pagerduty_schedule" "schedule" {
       start                        = layer.value["start"]
       rotation_virtual_start       = layer.value["rotation_virtual_start"]
       rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]
-      #users = [for x in layer.value["users"] :
-      #  data.pagerduty_user.users[x].id
-      #]  
-      users = values(data.pagerduty_user.users)[*].pagerduty_user.users[0].id
+      users = [for x in layer.value["users"] :
+        data.pagerduty_user.users[x].id
+      ]  
       
     }  
   }
@@ -39,27 +38,21 @@ resource "pagerduty_schedule" "schedule" {
 }
 
 
-#data "pagerduty_user" "users" {
-#  for_each = zipmap(
-#    distinct(flatten(values(var.schedule)[*]["users"])),
-#    distinct(flatten(values(var.schedule)[*]["users"]))
-#  )
-#  email = each.value
-#
-#  depends_on = [
-#    pagerduty_user.user
-#  ]
-#}
-
 data "pagerduty_user" "users" {
-  for_each = toset(flatten([for _, layer in var.schedule : layer.layer.users]))
-
+  #for_each = zipmap(
+  #  distinct(flatten(values(var.schedule)[*]["users"])),
+  #  distinct(flatten(values(var.schedule)[*]["users"]))
+  #)
+for_each = {
+    for _, layer in var.schedule : layer_name => layer.layer.users != null ? tolist(layer.layer.users)[0] : null
+  }  
   email = each.value
 
   depends_on = [
     pagerduty_user.user
   ]
 }
+
 #output "teste" {
 #  value = zipmap(
 #    distinct(flatten(values(var.schedule)[*]["layer"])),

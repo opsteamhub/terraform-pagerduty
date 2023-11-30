@@ -9,7 +9,7 @@ resource "pagerduty_schedule" "schedule" {
   dynamic "layer" {
     for_each = each.value["layer"]
     content {
-      name                         = layer.value["name"]
+      name                         = layer.key
       start                        = layer.value["start"]
       rotation_virtual_start       = layer.value["rotation_virtual_start"]
       rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]
@@ -19,15 +19,7 @@ resource "pagerduty_schedule" "schedule" {
       
     }  
   }
-  #layer {
-  #  name                         = each.value["layer_name"]
-  #  start                        = each.value["start"]
-  #  rotation_virtual_start       = each.value["rotation_virtual_start"]
-  #  rotation_turn_length_seconds = each.value["rotation_turn_length_seconds"]
-  #  users = [for x in each.value["users"] :
-  #    data.pagerduty_user.users[x].id
-  #  ]
-#
+
   #  #restriction {
   #  #  type              = each.value["type"] 
   #  #  start_time_of_day = each.value["start_time_of_day"]
@@ -37,23 +29,24 @@ resource "pagerduty_schedule" "schedule" {
   #}
 }
 
-#data "pagerduty_user" "users" {
-#  for_each = zipmap(
-#    distinct(flatten(values(var.schedule)[*]["layer"]["users"])),
-#    distinct(flatten(values(var.schedule)[*]["layer"]["users"]))
-#  )
-#  email = each.value
-#
-#
-#  depends_on = [
-#    pagerduty_user.user
-#  ]
-#}
+data "pagerduty_user" "users" {
+  for_each = zipmap(
+    #flatten(distinct(flatten(values(var.schedule)[*]["layer"])[*]["users"])),
+    #flatten(distinct(flatten(values(var.schedule)[*]["layer"])[*]["users"]))
+    distinct(flatten([for layer in values(var.schedule.weekdays.layer) : layer.users])),
+    distinct(flatten([for layer in values(var.schedule.weekdays.layer) : layer.users]))
+  )
+  email = each.value
 
-output "teste" {
-  value = distinct(flatten(values(var.schedule)[*]["layer"]))
- 
+
+  depends_on = [
+    pagerduty_user.user
+  ]
 }
+#
+#output "teste" {
+#  value = distinct(flatten([for layer in values(var.schedule.weekdays.layer) : layer.users]))
+#}
 
 #data "pagerduty_schedule" "schedule" {
 #  for_each = zipmap(

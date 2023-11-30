@@ -37,17 +37,24 @@ resource "pagerduty_schedule" "schedule" {
 }
 
 
-data "pagerduty_user" "users" {
-  for_each = zipmap(
-    distinct(flatten(values(var.schedule)[*]["layer"]["users"])),
-    distinct(flatten(values(var.schedule)[*]["layer"]["users"]))
-  )
-  email = { for k,v in each.value :
-   k => v.users
+#data "pagerduty_user" "users" {
+#  for_each = zipmap(
+#    distinct(flatten(values(var.schedule)[*]["layer"])),
+#    distinct(flatten(values(var.schedule)[*]["layer"]))
+#  )
+#  email = each.value
+#
+#  depends_on = [
+#    pagerduty_user.user
+#  ]
+#}
+
+data "pagerduty_user" "user" {
+  for_each = {
+    for user in var.schedule[*].layer : user => user
   }
-  depends_on = [
-    pagerduty_user.user
-  ]
+
+  email = element(each.value, 0)  # Aqui você seleciona o primeiro usuário da lista
 }
 
 #output "teste" {

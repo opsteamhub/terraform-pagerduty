@@ -39,22 +39,22 @@ resource "pagerduty_schedule" "schedule" {
 
 data "pagerduty_user" "users" {
   for_each = zipmap(
-    distinct(flatten(values(var.schedule)[*]["layer"])),
-    distinct(flatten(values(var.schedule)[*]["layer"]))
+    distinct(flatten(values(var.schedule)[*]["layer"]["users"])),
+    distinct(flatten(values(var.schedule)[*]["layer"]["users"]))
   )
-  email = each.value["users"]
+  email = each.value
 
   depends_on = [
     pagerduty_user.user
   ]
 }
 
-output "teste" {
-  value = zipmap(
-    distinct(flatten(values(var.schedule)[*]["layer"])),
-    distinct(flatten(values(var.schedule)[*]["layer"]))
-  )
-}
+#output "teste" {
+#  value = zipmap(
+#    distinct(flatten(values(var.schedule)[*]["layer"])),
+#    distinct(flatten(values(var.schedule)[*]["layer"]))
+#  )
+#}
 
 #data "pagerduty_schedule" "schedule" {
 #  for_each = zipmap(

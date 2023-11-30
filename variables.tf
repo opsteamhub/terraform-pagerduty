@@ -68,7 +68,7 @@ variable "schedule" {
       start                        = optional(string, "2023-02-16T08:00:00Z")
       rotation_virtual_start       = optional(string, "2023-02-16T08:00:00Z")
       rotation_turn_length_seconds = optional(number, 86400)
-      users                        = optional(list(string), [])
+      users                        = optional(set(string), null)
     })))
   }))
   default = {}

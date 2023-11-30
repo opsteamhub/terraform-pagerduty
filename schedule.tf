@@ -51,7 +51,7 @@ resource "pagerduty_schedule" "schedule" {
 
 data "pagerduty_user" "users" {
   for_each = {
-    for user in var.schedule[*].layer : user => user
+    for user in var.schedule[*].layer : user => users
   }
 
   email = element(each.value, 0)  # Aqui você seleciona o primeiro usuário da lista

@@ -54,11 +54,6 @@ variable "schedule" {
   type = map(object({
     name                           = optional(string)
     time_zone                      = optional(string, "Etc/UTC")
-    #layer_name                     = optional(string)
-    #start                          = optional(string, "2023-02-16T08:00:00Z")
-    #rotation_virtual_start         = optional(string, "2023-02-16T08:00:00Z")
-    #rotation_turn_length_seconds   = optional(number, 86400)
-    #users                          = optional(list(string), [])
     type                           = optional(string, "weekly_restriction")
     start_time_of_day              = optional(string, "16:00:00")
     duration_seconds               = optional(number, 432000)

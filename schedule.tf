@@ -6,23 +6,34 @@ resource "pagerduty_schedule" "schedule" {
   depends_on = [
     pagerduty_user.user
   ]
-
-  layer {
-    name                         = each.value["layer_name"]
-    start                        = each.value["start"]
-    rotation_virtual_start       = each.value["rotation_virtual_start"]
-    rotation_turn_length_seconds = each.value["rotation_turn_length_seconds"]
-    users = [for x in each.value["users"] :
-      data.pagerduty_user.users[x].id
-    ]
-
-    #restriction {
-    #  type              = each.value["type"] 
-    #  start_time_of_day = each.value["start_time_of_day"]
-    #  duration_seconds  = each.value["duration_seconds"]
-    #  start_day_of_week = each.value["type"]  == "weekly_restriction" ? each.value["start_day_of_week"] : null
-    #}
+  dynamic "layer" {
+    for_each = each.value["layer"]
+    content {
+      name                         = layer.value["layer_name"]
+      start                        = layer.value["start"]
+      rotation_virtual_start       = layer.value["rotation_virtual_start"]
+      rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]
+      users = [for x in layer.value["users"] :
+        data.pagerduty_user.users[x].id
+      ]    
+    }  
   }
+  #layer {
+  #  name                         = each.value["layer_name"]
+  #  start                        = each.value["start"]
+  #  rotation_virtual_start       = each.value["rotation_virtual_start"]
+  #  rotation_turn_length_seconds = each.value["rotation_turn_length_seconds"]
+  #  users = [for x in each.value["users"] :
+  #    data.pagerduty_user.users[x].id
+  #  ]
+#
+  #  #restriction {
+  #  #  type              = each.value["type"] 
+  #  #  start_time_of_day = each.value["start_time_of_day"]
+  #  #  duration_seconds  = each.value["duration_seconds"]
+  #  #  start_day_of_week = each.value["type"]  == "weekly_restriction" ? each.value["start_day_of_week"] : null
+  #  #}
+  #}
 }
 
 

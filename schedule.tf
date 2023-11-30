@@ -39,8 +39,8 @@ resource "pagerduty_schedule" "schedule" {
 
 data "pagerduty_user" "users" {
   for_each = zipmap(
-    distinct(flatten(values(var.schedule)[*]["layer"])),
-    distinct(flatten(values(var.schedule)[*]["layer"]))
+    distinct(flatten(values(var.schedule)[*]["layer"]["users"])),
+    distinct(flatten(values(var.schedule)[*]["layer"]["users"]))
   )
   email = { for k,v in each.value :
    k => v.users

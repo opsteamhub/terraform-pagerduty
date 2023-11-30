@@ -51,10 +51,10 @@ resource "pagerduty_schedule" "schedule" {
 
 data "pagerduty_user" "users" {
   for_each = {
-    for layer_name, layer in var.schedule : layer_name => flatten([for user in values(layer.layer)[0].users : user])
+    for layer_name, layer in var.schedule : layer_name => length(values(layer.layer)) > 0 ? tolist(values(layer.layer)[0].users) : []
   }
 
-  email = each.value
+  email = each.value[0]
 
   depends_on = [
     pagerduty_user.user

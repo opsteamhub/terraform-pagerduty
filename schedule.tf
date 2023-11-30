@@ -39,13 +39,10 @@ resource "pagerduty_schedule" "schedule" {
 
 
 data "pagerduty_user" "users" {
-  #for_each = zipmap(
-  #  distinct(flatten(values(var.schedule)[*]["users"])),
-  #  distinct(flatten(values(var.schedule)[*]["users"]))
-  #)
-for_each = {
-    for _, layer in var.schedule : layer_name => layer.layer.users != null ? tolist(layer.layer.users)[0] : null
-  }  
+  for_each = zipmap(
+    distinct(flatten(values(var.schedule.layer)[*]["users"])),
+    distinct(flatten(values(var.schedule.layer)[*]["users"]))
+  )
   email = each.value
 
   depends_on = [

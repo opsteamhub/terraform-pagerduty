@@ -9,13 +9,14 @@ resource "pagerduty_schedule" "schedule" {
   dynamic "layer" {
     for_each = each.value["layers"]
     content {
-      name                         = layers.key
-      start                        = layers.value["start"]
-      rotation_virtual_start       = layers.value["rotation_virtual_start"]
-      rotation_turn_length_seconds = layers.value["rotation_turn_length_seconds"]
-      users = [for x in layers.value["users"] :
+      name                         = layer.value["name"]
+      start                        = layer.value["start"]
+      rotation_virtual_start       = layer.value["rotation_virtual_start"]
+      rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]
+      users = [for x in layer.value["users"] :
         data.pagerduty_user.users[x].id
       ]
+
 
     }
   }
@@ -31,10 +32,8 @@ resource "pagerduty_schedule" "schedule" {
 
 data "pagerduty_user" "users" {
   for_each = zipmap(
-    #flatten(distinct(flatten(values(var.schedule)[*]["layer"])[*]["users"])),
-    #flatten(distinct(flatten(values(var.schedule)[*]["layer"])[*]["users"]))
-    distinct(flatten([for layers in values(var.schedule.weekdays.layers) : layers.users])),
-    distinct(flatten([for layers in values(var.schedule.weekdays.layers) : layers.users]))
+    flatten(distinct(flatten(values(var.schedule)[*]["layers"])[*]["users"])),
+    flatten(distinct(flatten(values(var.schedule)[*]["layers"])[*]["users"]))
   )
   email = each.value
 
@@ -43,10 +42,8 @@ data "pagerduty_user" "users" {
     pagerduty_user.user
   ]
 }
-#
-#output "teste" {
-#  value = distinct(flatten([for layer in values(var.schedule.weekdays.layer) : layer.users]))
-#}
+
+
 
 #data "pagerduty_schedule" "schedule" {
 #  for_each = zipmap(

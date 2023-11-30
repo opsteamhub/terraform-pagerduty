@@ -42,7 +42,7 @@ data "pagerduty_user" "users" {
     distinct(flatten(values(var.schedule)[*]["layer"])),
     distinct(flatten(values(var.schedule)[*]["layer"]))
   )
-  email = layer.value["users"]
+  email = each.value["users"]
 
   depends_on = [
     pagerduty_user.user
@@ -51,8 +51,8 @@ data "pagerduty_user" "users" {
 
 output "teste" {
   value = zipmap(
-    distinct(flatten(values(var.schedule)[*]["users"])),
-    distinct(flatten(values(var.schedule)[*]["users"]))
+    distinct(flatten(values(var.schedule)[*]["layer"])),
+    distinct(flatten(values(var.schedule)[*]["layer"]))
   )
 }
 

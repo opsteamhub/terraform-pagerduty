@@ -16,7 +16,7 @@ resource "pagerduty_schedule" "schedule" {
       #users = [for x in layer.value["users"] :
       #  data.pagerduty_user.users[x].id
       #]  
-      users = values(data.pagerduty_user.users)[*].id
+      users = values(data.pagerduty_user.users)[*].pagerduty_user.users[0].id
       
     }  
   }
@@ -52,7 +52,7 @@ resource "pagerduty_schedule" "schedule" {
 #}
 
 data "pagerduty_user" "users" {
-  for_each = toset(layer.value["users"])
+  for_each = toset(flatten([for _, layer in var.schedule : layer.layer.users]))
 
   email = each.value
 

@@ -7,17 +7,17 @@ resource "pagerduty_schedule" "schedule" {
     pagerduty_user.user
   ]
   dynamic "layer" {
-    for_each = each.value["layer"]
+    for_each = each.value["layers"]
     content {
-      name                         = layer.key
-      start                        = layer.value["start"]
-      rotation_virtual_start       = layer.value["rotation_virtual_start"]
-      rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]
-      users = [for x in layer.value["users"] :
+      name                         = layers.key
+      start                        = layers.value["start"]
+      rotation_virtual_start       = layers.value["rotation_virtual_start"]
+      rotation_turn_length_seconds = layers.value["rotation_turn_length_seconds"]
+      users = [for x in layers.value["users"] :
         data.pagerduty_user.users[x].id
-      ]  
-      
-    }  
+      ]
+
+    }
   }
 
   #  #restriction {

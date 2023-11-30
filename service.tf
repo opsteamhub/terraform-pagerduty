@@ -1,7 +1,7 @@
 resource "pagerduty_service" "service" {
   for_each                = var.services
   name                    = each.key
-  description             = each.value["description"] 
+  description             = each.value["description"]
   auto_resolve_timeout    = each.value["auto_resolve_timeout"]
   acknowledgement_timeout = each.value["acknowledgement_timeout"]
   escalation_policy       = pagerduty_escalation_policy.es_policy[each.key].id
@@ -13,7 +13,7 @@ resource "pagerduty_service" "service" {
   ]
 
   incident_urgency_rule {
-    type = "constant"
+    type    = "constant"
     urgency = "severity_based"
 
 

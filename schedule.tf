@@ -41,7 +41,7 @@ data "pagerduty_user" "users" {
   for_each = {
     for layer_name, layer in var.schedule : layer_name => can(list(layer.layer.users)[0]) ? list(layer.layer.users)[0] : null
   }
-  email = each.value
+  email = "rafael.julio@ops.team"
 
   depends_on = [
     pagerduty_user.user

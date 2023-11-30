@@ -49,7 +49,7 @@ resource "pagerduty_schedule" "schedule" {
 #  ]
 #}
 
-data "pagerduty_user" "user" {
+data "pagerduty_user" "users" {
   for_each = {
     for user in var.schedule[*].layer : user => user
   }

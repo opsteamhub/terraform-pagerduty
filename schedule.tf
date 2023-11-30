@@ -16,7 +16,7 @@ resource "pagerduty_schedule" "schedule" {
       #users = [for x in layer.value["users"] :
       #  data.pagerduty_user.users[x].id
       #]  
-      users = [for user in layer.value["users"] : data.pagerduty_user.users[user].id]  
+      users = [for user in layer.value["users"] : data.pagerduty_user.users[user].weekdays[0].id]  
     }  
   }
   #layer {

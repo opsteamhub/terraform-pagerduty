@@ -33,8 +33,8 @@ data "pagerduty_user" "users" {
   for_each = zipmap(
     #flatten(distinct(flatten(values(var.schedule)[*]["layer"])[*]["users"])),
     #flatten(distinct(flatten(values(var.schedule)[*]["layer"])[*]["users"]))
-    distinct(flatten([for layer in values(var.schedule.weekdays.layer) : layer.users])),
-    distinct(flatten([for layer in values(var.schedule.weekdays.layer) : layer.users]))
+    distinct(flatten([for layer in values(var.schedule.weekdays.layers) : layers.users])),
+    distinct(flatten([for layer in values(var.schedule.weekdays.layers) : layers.users]))
   )
   email = each.value
 

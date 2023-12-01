@@ -16,18 +16,18 @@ resource "pagerduty_schedule" "schedule" {
       users = [for x in layer.value["users"] :
         data.pagerduty_user.users[x].id
       ]
-
-
+    dynamic "restriction" {
+      for_each = layer.value["restriction"]
+      content {
+        type              = restriction.value["type"] 
+        start_time_of_day = restriction.value["start_time_of_day"]
+        duration_seconds  = restriction.value["duration_seconds"]
+        start_day_of_week = restriction.value["type"]  == "weekly_restriction" ? restriction.value["start_day_of_week"] : null
+      }  
     }
-  }
 
-  #  #restriction {
-  #  #  type              = each.value["type"] 
-  #  #  start_time_of_day = each.value["start_time_of_day"]
-  #  #  duration_seconds  = each.value["duration_seconds"]
-  #  #  start_day_of_week = each.value["type"]  == "weekly_restriction" ? each.value["start_day_of_week"] : null
-  #  #}
-  #}
+   }
+  }
 }
 
 data "pagerduty_user" "users" {

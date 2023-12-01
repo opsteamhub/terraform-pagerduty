@@ -69,7 +69,7 @@ variable "schedule" {
         start_time_of_day = optional(string, "16:00:00")
         duration_seconds  = optional(number, 432000)
         start_day_of_week = optional(number, 7)        
-      })))
+      })), [{}])
     })))
   })) 
   default = {}

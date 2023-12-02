@@ -53,7 +53,7 @@ variable "users" {
 variable "schedule" {
   type = map(object({
     name              = optional(string)
-    time_zone         = optional(string, "Etc/UTC")
+    time_zone         = optional(string, "America/Sao_Paulo")
     type              = optional(string, "weekly_restriction")
     start_time_of_day = optional(string, "16:00:00")
     duration_seconds  = optional(number, 432000)

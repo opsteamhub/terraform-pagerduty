@@ -53,22 +53,22 @@ data "pagerduty_user" "users" {
 #  name = each.value
 #}
 
-output "teste2" {
-  value = distinct(
-    flatten(
-      [for k, v in flatten(values(var.services)[*]["rules"]) :
-        [for x in v :
-          x.target
-        ]
-      ]
-    )
-  )
-
-  #value = zipmap(
-  #  distinct(flatten(values(var.services)[*]["rules"])),
-  #  distinct(flatten(values(var.services)[*]["rules"]))
-  #)
-}
+#output "teste2" {
+#  value = distinct(
+#    flatten(
+#      [for k, v in flatten(values(var.services)[*]["rules"]) :
+#        [for x in v :
+#          x.target
+#        ]
+#      ]
+#    )
+#  )
+#
+#  #value = zipmap(
+#  #  distinct(flatten(values(var.services)[*]["rules"])),
+#  #  distinct(flatten(values(var.services)[*]["rules"]))
+#  #)
+#}
 
 
 #output "pd_int" {

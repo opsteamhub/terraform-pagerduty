@@ -13,8 +13,14 @@ variable "services" {
 
     rules = optional(map(object({
       escalation_delay_in_minutes = optional(number, 15)
-      type                        = optional(string, "schedule_reference")
-      target                      = optional(set(string), null)
+      #type                        = optional(string, "schedule_reference")
+      #target                      = optional(set(string), null)
+      targets  = optional(list(object({
+        type   = optional(string, "schedule_reference")
+        #target = optional(set(string), null)
+        target = optional(string)
+
+      })))
     })))
     source_type                = optional(string, "service_reference")
     workspace_id               = optional(string, "")
@@ -53,7 +59,7 @@ variable "users" {
 variable "schedule" {
   type = map(object({
     name              = optional(string)
-    time_zone         = optional(string, "Etc/UTC")
+    time_zone         = optional(string, "America/Sao_Paulo")
     type              = optional(string, "weekly_restriction")
     start_time_of_day = optional(string, "16:00:00")
     duration_seconds  = optional(number, 432000)

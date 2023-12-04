@@ -40,13 +40,14 @@ resource "pagerduty_escalation_policy" "es_policy" {
       escalation_delay_in_minutes = rule.value["escalation_delay_in_minutes"]
 
       dynamic "target" {
-        for_each = rule.value["target"]
+        for_each = rule.value["targets"]
         content {
-          type = rule.value["type"]
-          id = try(
-            pagerduty_schedule.schedule[target.value].id,
-            pagerduty_user.user[target.value].id
-          )
+          type = target.value["type"]
+          #id = try(
+          #  pagerduty_schedule.schedule[target.value["target"]].id,
+          #  pagerduty_user.user[target.value["target"]].id
+          #)
+          id = target.value["type"] == "user_reference" ?  pagerduty_user.user[target.value["target"]].id : pagerduty_schedule.schedule[target.value["target"]].id
         }
       }
 

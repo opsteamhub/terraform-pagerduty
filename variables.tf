@@ -13,8 +13,14 @@ variable "services" {
 
     rules = optional(map(object({
       escalation_delay_in_minutes = optional(number, 15)
-      type                        = optional(string, "schedule_reference")
-      target                      = optional(set(string), null)
+      #type                        = optional(string, "schedule_reference")
+      #target                      = optional(set(string), null)
+      targets  = optional(list(object({
+        type   = optional(string, "schedule_reference")
+        #target = optional(set(string), null)
+        target = optional(string)
+
+      })))
     })))
     source_type                = optional(string, "service_reference")
     workspace_id               = optional(string, "")

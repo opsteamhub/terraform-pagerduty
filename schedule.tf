@@ -34,18 +34,36 @@ resource "pagerduty_schedule" "schedule" {
   }
 }
 
-data "pagerduty_user" "users" {
-  for_each = zipmap(
-    flatten(distinct(flatten(values(var.schedule)[*]["layers"])[*]["users"])),
-    flatten(distinct(flatten(values(var.schedule)[*]["layers"])[*]["users"]))
-  )
-  email = each.value
+#data "pagerduty_user" "users" {
+#  for_each = zipmap(
+#    flatten(distinct(flatten(values(var.schedule)[*]["layers"])[*]["users"])),
+#    flatten(distinct(flatten(values(var.schedule)[*]["layers"])[*]["users"]))
+#  )
+#  email = each.value
+#
+#
+#  depends_on = [
+#    pagerduty_user.user
+#  ]
+#}
 
+data "pagerduty_user" "users" {
+  for_each = flatten([
+    for layer_key, layer_data in var.schedule : [
+      for user_key, user_email in layer_data.layers[0].users : {
+        layer_key = layer_key
+        user_key  = user_key
+        user_email = user_email
+      }
+    ]
+  ])
+  email = each.value.user_email
 
   depends_on = [
     pagerduty_user.user
   ]
 }
+
 
 
 

@@ -48,21 +48,21 @@ resource "pagerduty_schedule" "schedule" {
 #}
 
 data "pagerduty_user" "users" {
-  for_each = flatten([
-    for layer_key, layer_data in var.schedule : [
-      for user_key, user_email in layer_data.layers[0].users : {
-        layer_key = layer_key
-        user_key  = user_key
-        user_email = user_email
-      }
+  for_each = toset(flatten([
+    for schedule_key, schedule_data in var.schedule : [
+      for layer_key, layer_data in schedule_data.layers : [
+        for user_email in values(layer_data.users) : user_email
+      ]
     ]
-  ])
-  email = each.value.user_email
+  ]))
+
+  email = each.value
 
   depends_on = [
     pagerduty_user.user
   ]
 }
+
 
 
 

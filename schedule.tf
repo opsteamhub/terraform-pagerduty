@@ -13,9 +13,9 @@ resource "pagerduty_schedule" "schedule" {
       start                        = layer.value["start"]
       rotation_virtual_start       = layer.value["rotation_virtual_start"]
       rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]
-      users = [for x in layer.value["users"] :
+      users = sort([ for x in layer.value["users"] :
         data.pagerduty_user.users[x].id
-      ]
+      ])
     dynamic "restriction" {
       for_each = { for k, v in layer.value["restriction"] :
         k => v if try(v["create_restriction"], false) == true

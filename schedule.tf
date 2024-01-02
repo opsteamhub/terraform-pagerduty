@@ -17,7 +17,9 @@ resource "pagerduty_schedule" "schedule" {
         data.pagerduty_user.users[x].id
       ]
     dynamic "restriction" {
-      for_each = layer.value["restriction"]
+      for_each = { for k, v in layer.value["restriction"] :
+        k => v if try(v["create_restriction"], true) == false
+      }  
       content {
         type              = restriction.value["type"] 
         start_time_of_day = restriction.value["start_time_of_day"]

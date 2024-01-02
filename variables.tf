@@ -71,6 +71,7 @@ variable "schedule" {
       rotation_turn_length_seconds = optional(number, 86400)
       users                        = optional(set(string), null)
       restriction                  = optional(list(object({
+        create_restriction = optional(bool, true)
         type              = optional(string, "weekly_restriction")
         start_time_of_day = optional(string, "16:00:00")
         duration_seconds  = optional(number, 432000)

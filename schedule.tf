@@ -18,7 +18,7 @@ resource "pagerduty_schedule" "schedule" {
       ]
     dynamic "restriction" {
       for_each = { for k, v in layer.value["restriction"] :
-        k => v if try(v["create_restriction"], true) == false
+        k => v if try(v["create_restriction"], false) == true
       }  
       content {
         type              = restriction.value["type"] 

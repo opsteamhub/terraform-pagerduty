@@ -69,7 +69,8 @@ variable "schedule" {
       start                        = optional(string, "2023-02-16T08:00:00Z")
       rotation_virtual_start       = optional(string, "2023-02-16T08:00:00Z")
       rotation_turn_length_seconds = optional(number, 86400)
-      users                        = optional(set(string), null)
+      #users                        = optional(set(string), null)
+      users = optional(map(string), {})
       restriction                  = optional(list(object({
         create_restriction = optional(bool, true)
         type              = optional(string, "weekly_restriction")

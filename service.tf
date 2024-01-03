@@ -47,7 +47,7 @@ resource "pagerduty_escalation_policy" "es_policy" {
           #  pagerduty_schedule.schedule[target.value["target"]].id,
           #  pagerduty_user.user[target.value["target"]].id
           #)
-          id = target.value["type"] == "user_reference" ?  pagerduty_user.user[target.value["target"]].id : pagerduty_schedule.schedule[target.value["target"]].id
+          id = target.value["type"] == "user_reference" ? pagerduty_user.user[target.value["target"]].id : pagerduty_schedule.schedule[target.value["target"]].id
         }
       }
 

@@ -18,19 +18,19 @@ resource "pagerduty_schedule" "schedule" {
       #]
       users = [for x in layer.value["users"] : data.pagerduty_user.users[x].id]
 
-    dynamic "restriction" {
-      for_each = { for k, v in layer.value["restriction"] :
-        k => v if try(v["create_restriction"], false) == true
-      }  
-      content {
-        type              = restriction.value["type"] 
-        start_time_of_day = restriction.value["start_time_of_day"]
-        duration_seconds  = restriction.value["duration_seconds"]
-        start_day_of_week = restriction.value["type"]  == "weekly_restriction" ? restriction.value["start_day_of_week"] : null
-      }  
-    }
+      dynamic "restriction" {
+        for_each = { for k, v in layer.value["restriction"] :
+          k => v if try(v["create_restriction"], false) == true
+        }
+        content {
+          type              = restriction.value["type"]
+          start_time_of_day = restriction.value["start_time_of_day"]
+          duration_seconds  = restriction.value["duration_seconds"]
+          start_day_of_week = restriction.value["type"] == "weekly_restriction" ? restriction.value["start_day_of_week"] : null
+        }
+      }
 
-   }
+    }
   }
 }
 

@@ -15,8 +15,8 @@ variable "services" {
       escalation_delay_in_minutes = optional(number, 15)
       #type                        = optional(string, "schedule_reference")
       #target                      = optional(set(string), null)
-      targets  = optional(list(object({
-        type   = optional(string, "schedule_reference")
+      targets = optional(list(object({
+        type = optional(string, "schedule_reference")
         #target = optional(set(string), null)
         target = optional(string)
 
@@ -64,22 +64,22 @@ variable "schedule" {
     start_time_of_day = optional(string, "16:00:00")
     duration_seconds  = optional(number, 432000)
     start_day_of_week = optional(number, 7)
-    layers            = optional(list(object({
+    layers = optional(list(object({
       name                         = string
       start                        = optional(string, "2023-02-16T08:00:00Z")
       rotation_virtual_start       = optional(string, "2023-02-16T08:00:00Z")
       rotation_turn_length_seconds = optional(number, 86400)
       #users                        = optional(set(string), null)
       users = optional(map(string), {})
-      restriction                  = optional(list(object({
+      restriction = optional(list(object({
         create_restriction = optional(bool, true)
-        type              = optional(string, "weekly_restriction")
-        start_time_of_day = optional(string, "16:00:00")
-        duration_seconds  = optional(number, 432000)
-        start_day_of_week = optional(number, 7)        
+        type               = optional(string, "weekly_restriction")
+        start_time_of_day  = optional(string, "16:00:00")
+        duration_seconds   = optional(number, 432000)
+        start_day_of_week  = optional(number, 7)
       })), [{}])
     })))
-  })) 
+  }))
   default = {}
 }
 

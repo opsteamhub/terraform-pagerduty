@@ -3,7 +3,7 @@ terraform {
   required_providers {
     pagerduty = {
       source  = "pagerduty/pagerduty"
-      version = "3.11.4"
+      version = "3.15.6"
     }
     helm = {
       source  = "hashicorp/helm"

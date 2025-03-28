@@ -83,4 +83,7 @@ variable "schedule" {
   default = {}
 }
 
-
+variable "update_schedule" {
+  type    = bool
+  default = true
+}

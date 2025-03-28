@@ -17,6 +17,7 @@ resource "pagerduty_schedule" "schedule" {
       #  data.pagerduty_user.users[x].id
       #]
       users = [for x in layer.value["users"] : data.pagerduty_user.users[x].id]
+      
 
       dynamic "restriction" {
         for_each = { for k, v in layer.value["restriction"] :
@@ -32,6 +33,9 @@ resource "pagerduty_schedule" "schedule" {
 
     }
   }
+  lifecycle {
+    ignore_changes = [layer]
+  }  
 }
 
 #data "pagerduty_user" "users" {

@@ -1,11 +1,11 @@
-# Este recurso atualiza sempre que houver alteração
 resource "pagerduty_schedule" "schedule" {
-  for_each  = var.update_schedule ? var.schedule : {}
+  for_each  = var.schedule
   name      = each.value["name"]
   time_zone = each.value["time_zone"]
 
-  depends_on = [pagerduty_user.user]
-
+  depends_on = [
+    pagerduty_user.user
+  ]
   dynamic "layer" {
     for_each = each.value["layers"]
     content {
@@ -13,11 +13,14 @@ resource "pagerduty_schedule" "schedule" {
       start                        = layer.value["start"]
       rotation_virtual_start       = layer.value["rotation_virtual_start"]
       rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]
-      users = [for x in sort(keys(layer.value["users"])) : data.pagerduty_user.users[layer.value["users"][x]].id]
+      #users = [ for x in layer.value["users"] :
+      #  data.pagerduty_user.users[x].id
+      #]
+      users = [for x in layer.value["users"] : data.pagerduty_user.users[x].id]
 
       dynamic "restriction" {
         for_each = { for k, v in layer.value["restriction"] :
-          k => v if try(v["create_restriction"], false)
+          k => v if try(v["create_restriction"], false) == true
         }
         content {
           type              = restriction.value["type"]
@@ -26,43 +29,8 @@ resource "pagerduty_schedule" "schedule" {
           start_day_of_week = restriction.value["type"] == "weekly_restriction" ? restriction.value["start_day_of_week"] : null
         }
       }
+
     }
-  }
-}
-
-# Este recurso ignora mudanças no layer
-resource "pagerduty_schedule" "schedule_no_change" {
-  for_each  = var.update_schedule ? {} : var.schedule
-  name      = each.value["name"]
-  time_zone = each.value["time_zone"]
-
-  depends_on = [pagerduty_user.user]
-
-  dynamic "layer" {
-    for_each = each.value["layers"]
-    content {
-      name                         = layer.value["name"]
-      start                        = layer.value["start"]
-      rotation_virtual_start       = layer.value["rotation_virtual_start"]
-      rotation_turn_length_seconds = layer.value["rotation_turn_length_seconds"]
-      users = [for x in sort(keys(layer.value["users"])) : data.pagerduty_user.users[layer.value["users"][x]].id]
-
-      dynamic "restriction" {
-        for_each = { for k, v in layer.value["restriction"] :
-          k => v if try(v["create_restriction"], false)
-        }
-        content {
-          type              = restriction.value["type"]
-          start_time_of_day = restriction.value["start_time_of_day"]
-          duration_seconds  = restriction.value["duration_seconds"]
-          start_day_of_week = restriction.value["type"] == "weekly_restriction" ? restriction.value["start_day_of_week"] : null
-        }
-      }
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [layer]
   }
 }
 

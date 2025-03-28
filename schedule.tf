@@ -33,9 +33,9 @@ resource "pagerduty_schedule" "schedule" {
 
     }
   }
-  lifecycle {
-    ignore_changes = [layer]
-  }  
+  #lifecycle {
+  #  ignore_changes = [layer]
+  #}  
 }
 
 #data "pagerduty_user" "users" {

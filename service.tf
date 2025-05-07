@@ -34,14 +34,14 @@ resource "pagerduty_escalation_policy" "es_policy" {
   ]
 
   dynamic "rule" {
-    for_each = {
-      for r in each.value.rules : r.name => r
-    }
+    for_each = toset([for idx, r in each.value.rules : idx])
+
     content {
-      escalation_delay_in_minutes = rule.value.escalation_delay_in_minutes
+      escalation_delay_in_minutes = each.value.rules[rule.key].escalation_delay_in_minutes
 
       dynamic "target" {
-        for_each = rule.value.targets
+        for_each = each.value.rules[rule.key].targets
+
         content {
           type = target.value.type
           id = (

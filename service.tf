@@ -25,69 +25,35 @@ resource "pagerduty_service" "service" {
 
 resource "pagerduty_escalation_policy" "es_policy" {
   for_each = var.services
-  name     = join("-", [each.key, "pl"])
-  #teams    = [data.pagerduty_team.team[each.key].id]
+
+  name = join("-", [each.key, "pl"])
 
   depends_on = [
-    #pagerduty_team.team,
     pagerduty_schedule.schedule,
     pagerduty_user.user
   ]
 
   dynamic "rule" {
-    for_each = each.value["rules"]
+    for_each = {
+      for r in each.value.rules : r.name => r
+    }
     content {
-      escalation_delay_in_minutes = rule.value["escalation_delay_in_minutes"]
+      escalation_delay_in_minutes = rule.value.escalation_delay_in_minutes
 
       dynamic "target" {
-        for_each = rule.value["targets"]
+        for_each = rule.value.targets
         content {
-          type = target.value["type"]
-          #id = try(
-          #  pagerduty_schedule.schedule[target.value["target"]].id,
-          #  pagerduty_user.user[target.value["target"]].id
-          #)
-          id = target.value["type"] == "user_reference" ? pagerduty_user.user[target.value["target"]].id : pagerduty_schedule.schedule[target.value["target"]].id
+          type = target.value.type
+          id = (
+            target.value.type == "user_reference"
+            ? lookup(pagerduty_user.user, target.value.target).id
+            : lookup(pagerduty_schedule.schedule, target.value.target).id
+          )
         }
       }
-
-      ##target {
-      ##  type = rule.value["type"]
-      ##  id   = rule.value["type"] == "schedule_reference" ? [ for x in rule.value["target"]: 
-      ##    pagerduty_schedule.schedule[x].id 
-      ##  ] : [ for x in rule.value["target"]:
-      ##    pagerduty_user.user[x].id
-      ##  ]
-      ##  #id = rule.value["type"] == "schedule_reference" ? pagerduty_schedule.schedule[rule.value["target"]].id : pagerduty_user.user[rule.value["target"]].id
-      ##}
     }
   }
 }
 
-#data "pagerduty_team" "team" {
-#  for_each = var.services
-#  name     = each.value["teams"]
-#
-#  depends_on = [
-#    pagerduty_team.team
-#  ]
-#}
 
-#data "pagerduty_user" "users" {
-#  for_each = var.schedule
-#  email    = each.value["users"]
-#
-#  depends_on = [
-#    pagerduty_user.user
-#  ]
-#}
-
-#data "pagerduty_schedule" "schedule" {
-#  for_each = var.services
-#  name = "Scale Weekdays Rotation"
-#
-#  depends_on = [
-#    pagerduty_schedule.schedule
-#  ]
-#}
 

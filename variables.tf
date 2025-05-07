@@ -9,19 +9,16 @@ variable "services" {
     auto_resolve_timeout    = optional(number, 14400)
     acknowledgement_timeout = optional(number, 600)
     alert_creation          = optional(string, "create_alerts_and_incidents")
-    #teams                   = optional(string, null)
 
-    rules = optional(map(object({
+    rules = optional(list(object({
+      name                        = string
       escalation_delay_in_minutes = optional(number, 15)
-      #type                        = optional(string, "schedule_reference")
-      #target                      = optional(set(string), null)
       targets = optional(list(object({
-        type = optional(string, "schedule_reference")
-        #target = optional(set(string), null)
+        type   = optional(string, "schedule_reference")
         target = optional(string)
+      })), [])
+    })), [])
 
-      })))
-    })))
     source_type                = optional(string, "service_reference")
     workspace_id               = optional(string, "")
     channel_id                 = optional(string, "")
@@ -33,6 +30,7 @@ variable "services" {
   }))
   default = {}
 }
+
 
 #variable "teams" {
 #  type = map(object({

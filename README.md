@@ -133,8 +133,21 @@ module "pagerduty" {
 - `user_role` - User role (default: "user")
 - `user_time_zone` - User's timezone (default: "America/Sao_Paulo")
 - `country_code` - Phone country code (default: "+55")
-- `phone` - Phone number
+- `phone` - Phone number used for the voice contact method
 - `label` - Contact method label (default: "Work")
+- `whatsapp_country_code` - Country code of the WhatsApp number (default: same as `country_code`)
+- `whatsapp_phone` - WhatsApp number, when it differs from `phone` (default: same as `phone`)
+- `whatsapp_label` - Label of the WhatsApp contact method (default: same as `label`)
+
+Example of a user whose WhatsApp number differs from the voice one:
+
+```hcl
+"moises.glaubert@ops.team" = {
+  user_name      = "Moises Glaubert"
+  phone          = "84998024674"
+  whatsapp_phone = "84996390032"
+}
+```
 
 #### Schedule Configuration
 

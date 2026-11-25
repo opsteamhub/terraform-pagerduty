@@ -50,6 +50,12 @@ variable "users" {
     country_code = optional(string, "+55")
     phone        = optional(string, "")
     label        = optional(string, "Work")
+
+    # Contact method de WhatsApp em número distinto do de voz.
+    # Quando não informado, reaproveita country_code/phone/label acima.
+    whatsapp_country_code = optional(string, "")
+    whatsapp_phone        = optional(string, "")
+    whatsapp_label        = optional(string, "")
   }))
   default = {}
 }

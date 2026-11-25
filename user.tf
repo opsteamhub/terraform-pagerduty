@@ -70,7 +70,7 @@ resource "pagerduty_user_notification_rule" "high_urgency_sms" {
   urgency                = "high"
 
   contact_method = {
-    type = "sms_contact_method"
+    type = "whatsapp_contact_method"
     id   = pagerduty_user_contact_method.sms[each.key].id
   }
 }

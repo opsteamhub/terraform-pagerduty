@@ -9,7 +9,7 @@ A comprehensive Terraform module for managing PagerDuty resources including serv
 - **Schedule Management**: Set up on-call schedules with rotation and restrictions
 - **Integrations**: Support for Prometheus and Slack integrations
 - **Escalation Policies**: Automated escalation rules with customizable delays
-- **Contact Methods**: Phone and SMS notifications with urgency-based rules
+- **Contact Methods**: Voice and WhatsApp notifications with urgency-based rules
 
 ## Usage
 
@@ -177,7 +177,7 @@ Example of a user whose WhatsApp number differs from the voice one:
 - `pagerduty_schedule` - On-call schedules
 
 ### Contact Methods
-- `pagerduty_user_contact_method` - Phone and SMS contact methods
+- `pagerduty_user_contact_method` - Voice and WhatsApp contact methods
 - `pagerduty_user_notification_rule` - Notification rules for different urgencies
 
 ### Integrations
@@ -211,7 +211,8 @@ When `slack_integration = true`, the module creates a Slack connection that send
 - Users must exist before they can be assigned to schedules
 - Services depend on escalation policies and schedules
 - Contact methods are automatically created for all users
-- High urgency notifications are configured for both phone and SMS after 3 minutes
+- High urgency notifications are configured for both voice and WhatsApp after 3 minutes
+- WhatsApp contact methods must be verified by each user in PagerDuty before they deliver, and a number cannot be SMS and WhatsApp at the same time
 - Weekly restrictions can be applied to schedule layers for business hours coverage
 
 ## License

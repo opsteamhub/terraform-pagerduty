@@ -80,9 +80,12 @@ resource "pagerduty_user_notification_rule" "high_urgency_sms" {
   urgency                = "high"
 
   contact_method {
-    # Acompanha o tipo real do contact method: whatsapp_contact_method depois da
-    # migração, sms_contact_method enquanto o número ainda não foi convertido.
-    type = pagerduty_user_contact_method.sms[each.key].type
+    # O contact method referenciado aqui é do tipo whatsapp_contact_method, mas
+    # este campo precisa continuar "sms_contact_method": o provider só valida
+    # email/phone/push/sms nas notification rules e o PagerDuty trata WhatsApp
+    # como da mesma família de SMS. Trocar por whatsapp_contact_method faz o
+    # plan falhar com "Invalid Attribute Value Match".
+    type = "sms_contact_method"
     id   = pagerduty_user_contact_method.sms[each.key].id
   }
 }

@@ -36,7 +36,7 @@ resource "pagerduty_user" "user" {
 resource "pagerduty_user_contact_method" "phone" {
   for_each     = var.users
   user_id      = pagerduty_user.user[each.key].id
-  type         = "whatsapp_contact_method"
+  type         = "phone_contact_method"
   country_code = each.value["country_code"]
   address      = each.value["phone"]
   label        = each.value["label"]
@@ -45,7 +45,7 @@ resource "pagerduty_user_contact_method" "phone" {
 resource "pagerduty_user_contact_method" "sms" {
   for_each     = var.users
   user_id      = pagerduty_user.user[each.key].id
-  type         = "sms_contact_method"
+  type         = "whatsapp_contact_method"
   country_code = each.value["country_code"]
   address      = each.value["phone"]
   label        = each.value["label"]

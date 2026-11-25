@@ -2,8 +2,10 @@
 terraform {
   required_providers {
     pagerduty = {
-      source  = "pagerduty/pagerduty"
-      version = "3.31.5"
+      source = "pagerduty/pagerduty"
+      # 3.33.0 é a primeira versão que aceita whatsapp_contact_method em
+      # pagerduty_user_notification_rule, usado em user.tf.
+      version = "3.33.0"
     }
     helm = {
       source  = "hashicorp/helm"

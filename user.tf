@@ -57,7 +57,7 @@ resource "pagerduty_user_notification_rule" "high_urgency_phone" {
   start_delay_in_minutes = 3
   urgency                = "high"
 
-  contact_method = {
+  contact_method {
     type = "phone_contact_method"
     id   = pagerduty_user_contact_method.phone[each.key].id
   }
@@ -69,7 +69,7 @@ resource "pagerduty_user_notification_rule" "high_urgency_sms" {
   start_delay_in_minutes = 3
   urgency                = "high"
 
-  contact_method = {
+  contact_method {
     type = "whatsapp_contact_method"
     id   = pagerduty_user_contact_method.sms[each.key].id
   }
